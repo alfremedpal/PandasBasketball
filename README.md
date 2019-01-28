@@ -41,7 +41,7 @@ To get the 'Per Game' table for LeBron James you would do something like this:
 df = pb.get_player("jamesle01", "per_game")
 ```
 
-## Considerations
+### Considerations
 - The resulting data frame will have the same column names as the table's header but it will not have a set index.
 - The resulting data frame **does not** include the table's footer.
 - The columns will be of type 'object', so in order to perform arithmetic functions on them you will need to convert them to numeric. You can do something like this:
@@ -50,5 +50,17 @@ lbj_pg = pb.get_player("jamesle01", "per_game")
 lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ignore")
 ```
 
+## Teams
+You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, BKN).
+
+### Example
+To get OKC's table:
+```
+df = pb.get_team("OKC")
+```
+
 # Future
-The next step is to implement a function to obtain the table of all the seasons of a given NBA team. After that, probably implement a funtion to obtain a player's specific season.
+TODO
+
+# Known Issues
+players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.
