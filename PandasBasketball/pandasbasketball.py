@@ -14,7 +14,7 @@ def get_player(code, stat):
     \t\tstat -- the stat table\n
     """
 
-    #Building the url and making the request
+    # Building the url and making the request
     url = BASE_URL + f"/players/{code[0]}/{code}.html"
     r = requests.get(url)
 

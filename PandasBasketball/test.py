@@ -40,6 +40,7 @@ for row in rows:
 for row in rows:
     line = row.find_all("td", class_="right")
     for value in line:
+        print(value)
         if value.string is None:
             break
         stats.append(value.string)
@@ -54,10 +55,6 @@ for i in range(len(seasons)):
             print("Hey")
     del(stats[:len(columns) - 1])
 
-print(len(seasons))
-print(len(columns))
-print(len(stats))
-print(len(data))
 
 # Making a list of tuples
 data = list(zip(*[iter(data)]*len(columns)))

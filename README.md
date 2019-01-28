@@ -51,7 +51,4 @@ lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ign
 ```
 
 # Future
-The next step is to implement a function to obtain the table of all the seasons of a given NBA team. After that, probbaly fix the issue about the missing table values so a player season function can be written.
-
-# Known issues
-If the table has missing values these wil be skipped and therefore the data frame values will be shifted.
+The next step is to implement a function to obtain the table of all the seasons of a given NBA team. After that, probably implement a funtion to obtain a player's specific season.

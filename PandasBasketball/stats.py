@@ -33,13 +33,6 @@ def player_stats(request, stat):
 
     for x in heading_row.find_all("th"):
         columns.append(x.string)
-    
-    if stat == "per_poss" or stat == "playoffs_per_poss": # Remove the extra empty columns on certain tables
-        columns.remove(None)
-    elif stat == "advanced" or stat == "playoffs_advanced":
-        del(columns[19])
-        del(columns[23])
-        
 
     # Gettin the 'season' column values
     for row in rows:
@@ -54,8 +47,6 @@ def player_stats(request, stat):
     for row in rows:
         line = row.find_all("td")   
         for value in line:                          
-            if value.string is None:    # Skips the empty columns
-                continue
             stats.append(value.string)
 
     # Joining all data into 'data'
@@ -71,5 +62,11 @@ def player_stats(request, stat):
     # Builing the data frame
     df = pd.DataFrame(data)
     df.columns = columns
+
+    # Delete extra columns
+    if stat == "per_poss" or stat == "playoffs_per_poss":
+        del df[None]
+    elif stat == "advanced" or stat == "playoffs_advanced":
+        del df["\xa0"]
     
     return df
