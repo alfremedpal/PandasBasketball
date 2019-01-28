@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from PandasBasketball.stats import player_stats
+from PandasBasketball.stats import player_stats, team_stats
 from PandasBasketball.errors import StatusCode404
 
 BASE_URL = "https://www.basketball-reference.com"
@@ -25,17 +25,15 @@ def get_player(code, stat):
     else:
         return player_stats(r, stat)
 
+def get_team(team):
+    """
+    """
+    
+    url = BASE_URL + f"/teams/{team}"
+    r = requests.get(url)
 
-    """
-    supported tables:
-        - per_game    
-        - totals      
-        - per_minute  
-        - per_poss    
-        - advanced
-        - playoffs_per_game    
-        - playoffs_totals      
-        - playoffs_per_minute  
-        - playoffs_per_poss    
-        - playoffs_advanced    
-    """
+    if r.status_code == 404:
+        raise StatusCode404
+    else:
+        return team_stats(r, team)
+    

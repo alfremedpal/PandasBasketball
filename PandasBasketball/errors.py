@@ -2,7 +2,7 @@
 class StatusCode404(Exception):
     def __init__(self):
         message = """The page could not be found; url build failed.\n
-                    You could have mistyped the player url code"""
+                    You could have mistyped the player or the team"""
         super().__init__(message)
 
 class TableNonExistent(Exception):
