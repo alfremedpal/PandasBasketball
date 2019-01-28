@@ -19,7 +19,7 @@ All the requirements can easily be met with the installation of the [Anaconda](h
 
 # Usage
 ## Players
-Inside a player's page on the basketball-reference website you can find several tables, and most of these tables can be obtained as a pandas data frame by calling `get_player(code, stat)`. The 'code' refers to the name of the html file used by basketball-reference inside the url, and the 'stat' means the kind of table.
+Inside a player's page on the basketball-reference website you can find several tables, and most of these tables can be obtained as a pandas data frame by calling `get_player(player, stat)`. The 'player' refers to the name of the html file used by basketball-reference inside the url, and the 'stat' means the type of table.
 
 The currently supported tables are:
 - Per Game (`per_game`)
@@ -41,14 +41,20 @@ To get the 'Per Game' table for LeBron James you would do something like this:
 df = pb.get_player("jamesle01", "per_game")
 ```
 
+### Optional Arguments
+The `get_team()` method supports two optional arguments:
+- numeric -- boolean
+- s_index -- boolean
+
 ### Considerations
-- The resulting data frame will have the same column names as the table's header but it will not have a set index.
 - The resulting data frame **does not** include the table's footer.
+- The resulting data frame will have the same column names as the table's header but it will not have a set index. To set the 'Season' column as index set the argument `s_index` to `True`. 
 - The columns will be of type 'object', so in order to perform arithmetic functions on them you will need to convert them to numeric. You can do something like this:
 ```
 lbj_pg = pb.get_player("jamesle01", "per_game")
 lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ignore")
 ```
+Or you cant set the optional argument `s_index` to True
 
 ## Teams
 You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, BKN).
