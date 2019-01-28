@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, NavigableString
 
 from PandasBasketball.errors import TableNonExistent
 
-def player_stats(request, stat):
+def player_stats(request, stat, numeric=False, s_index=False):
 
     supported_tables = ["totals", "per_minute", "per_poss", "advanced",
                         "playoffs_per_game", "playoffs_totals", "playoffs_per_minute",
@@ -62,6 +62,12 @@ def player_stats(request, stat):
     elif stat == "advanced" or stat == "playoffs_advanced":
         del df["\xa0"]
     
+    if numeric:
+        df[df.columns] = df[df.columns].apply(pd.to_numeric, errors="ignore")
+    if s_index:
+        df.set_index("Season", inplace=True)
+
+
     return df
 
 def team_stats(request, team):
