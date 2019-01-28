@@ -27,8 +27,11 @@ def get_player(code, stat):
 
 def get_team(team):
     """
+    Returns a pandas dataframe with the team's stats
+    \tKeyword arguments:
+    \t\tteam -- the team's three-letter name
     """
-    
+
     url = BASE_URL + f"/teams/{team}"
     r = requests.get(url)
 
