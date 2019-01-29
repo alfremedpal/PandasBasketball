@@ -56,6 +56,10 @@ lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ign
 ```
 Or you cant set the optional argument `s_index` to True
 
+## Player by season
+You can get a player's stats by season by calling `get_player_season(player, season)`.
+**NOTE:** Please read *Known Issues*
+
 ## Teams
 You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, BKN).
 
@@ -66,7 +70,8 @@ df = pb.get_team("OKC")
 ```
 
 # Future
-TODO
+Fix known issues mainly
 
 # Known Issues
-players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.
+- Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.
+- `get_player_season` **wil not work** if a player missed a game.
