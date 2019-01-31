@@ -42,9 +42,11 @@ df = pb.get_player("jamesle01", "per_game")
 ```
 
 ### Optional Arguments
-The `get_team()` method supports two optional arguments:
-- numeric -- boolean
-- s_index -- boolean
+The `get_player()` method supports two optional arguments:
+- numeric - returns the data frame with its columns alreay comverted to numeric
+- s_index - returns the data frame with its column 'Season' as the index
+
+Both are set to `False` by deault.
 
 ### Considerations
 - The resulting data frame **does not** include the table's footer.
@@ -54,11 +56,21 @@ The `get_team()` method supports two optional arguments:
 lbj_pg = pb.get_player("jamesle01", "per_game")
 lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ignore")
 ```
-Or you cant set the optional argument `s_index` to True
+Or you cant set the optional argument `numeric` to True
 
 ## Player by season
-You can get a player's stats by season by calling `get_player_season(player, season)`.
-**NOTE:** Please read *Known Issues*
+You can get a player's stats by season by calling `get_player_season(player, season)`. The resulting data frame consists of all the player's games on the specified season. The `season` argument must be the last year in which the season took place. 
+
+### Example
+To get all of Kawhi Leonard's games during the 2017-2018 season:
+```
+df = pb.get_player_season("leonaka01", "2018")
+```
+
+### Considerations
+- The resulting data frame will use the 'Rk' column as its index
+- The data frame does not include those rows which are just the header again
+- If the player missed a game, the row will be filled with blanks ("")
 
 ## Teams
 You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, BKN).
@@ -70,8 +82,12 @@ df = pb.get_team("OKC")
 ```
 
 # Future
-Fix known issues mainly
+- Add support for the rest of tables on a player's page
+- Implement function to obtain team stats per season
+- Implement function to obtain coaching records
+- Implement function to obtain game results by date
+- Fix known issues
 
 # Known Issues
 - Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.
-- `get_player_season` **wil not work** if a player missed a game.
+- ~~`get_player_season` **wil not work** if a player missed a game for whatever reason.~~ This *should* be fixed now, at least if the reason was 'Inactive', 'Did Not Play', or 'Did Not Dress'. I'm oblivious if there is another justification for a player's absence used in basketball-reference.
