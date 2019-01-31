@@ -8,13 +8,13 @@ BASE_URL = "https://www.basketball-reference.com"
 
 def get_player(player, stat, numeric=False, s_index=False):
     """
-    Returns a pandas dataframe with the player's stats
+    Returns a pandas dataframe with the player's stats.
     \tKeyword arguments:
     \t\tcode -- the player's url code
     \t\tstat -- the stat table
     \tOptional arguments:
-    \t\numeric -- boolean
-    \t\s_index -- boolean\n
+    \t\tnumeric -- boolean
+    \t\ts_index -- boolean\n
     """
 
     # Building the url and making the request
@@ -30,6 +30,10 @@ def get_player(player, stat, numeric=False, s_index=False):
 
 def get_player_season(player, season):
     """
+    Returns all of the player's ganes in specified season as a data frame
+    \tKeyword arguments:
+    \t\tplayer -- the player's url code
+    \t\tseason -- the season (e.g. 2018 for the 2017-18 season)
     """
 
     url = BASE_URL + f"/players/{player[0]}/{player}/gamelog/{season}"
@@ -44,9 +48,9 @@ def get_player_season(player, season):
 
 def get_team(team):
     """
-    Returns a pandas dataframe with the team's stats
+    Returns a pandas dataframe with the team's stats.
     \tKeyword arguments:
-    \t\tteam -- the team's three-letter name
+    \t\tteam -- the team's three-letter abbreviation
     """
 
     url = BASE_URL + f"/teams/{team}"

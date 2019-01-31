@@ -40,9 +40,9 @@ def player_season(request):
     soup = BeautifulSoup(request.text, "html.parser")
     table = soup.find("table", class_="row_summable sortable stats_table")
 
-    df = get_data(table)
-    del df["Rk"]
-
+    df = player_season_data(table)
+    df.set_index("Rk", inplace=True)
+    
     return df
 
 
@@ -56,7 +56,49 @@ def team_stats(request, team):
 
     return df
 
+def player_season_data(table):
+
+    columns = []
+    heading = table.find("thead")
+    heading_row = heading.find("tr")
+
+    for x in heading_row.find_all("th"):
+        columns.append(x.string)
+
+    body = table.find("tbody")
+    rows = body.find_all("tr")
+
+    data = []
+    for row in rows:
+        temp = []
+        th = row.find("th")
+        td = row.find_all("td")
+        temp.append(th.text)
+        for v in td:
+            # Fills the rest of the row with blanks
+            if v.text == "Inactive" or v.text == "Did Not Play" or v.text == "Did Not Dress":
+                temp.extend([""]*22)
+                break
+            else:
+                temp.append(v.text)
+        data.append(temp)
+    
+    # Get rids of the headers in the middle of the table
+    for l in data:
+        if len(l) != 30:
+            data.remove(l)
+
+    df = pd.DataFrame(data)
+    df.columns = columns
+
+    return df
+
 def get_data(table):
+    """
+    It works, but it is kinda too much.
+    Looks nicer in 'get_player_season_data',
+    I'll change it when I have time, probably.
+    """
 
     columns = []
     seasons = []
