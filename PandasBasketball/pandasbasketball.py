@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from PandasBasketball.stats import player_stats, team_stats, player_season
+from PandasBasketball.stats import player_stats, team_stats, player_gamelog
 from PandasBasketball.errors import StatusCode404
 
 BASE_URL = "https://www.basketball-reference.com"
@@ -28,7 +28,7 @@ def get_player(player, stat, numeric=False, s_index=False):
     else:
         return player_stats(r, stat, numeric=numeric, s_index=s_index)
 
-def get_player_season(player, season):
+def get_player_gamelog(player, season):
     """
     Returns all of the player's ganes in specified season as a data frame
     \tKeyword arguments:
@@ -42,7 +42,7 @@ def get_player_season(player, season):
     if r.status_code == 404:
         raise StatusCode404
     else:
-        return player_season(r)
+        return player_gamelog(r)
 
 
 

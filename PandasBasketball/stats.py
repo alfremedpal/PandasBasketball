@@ -35,7 +35,7 @@ def player_stats(request, stat, numeric=False, s_index=False):
 
     return df
 
-def player_season(request):
+def player_gamelog(request):
 
     soup = BeautifulSoup(request.text, "html.parser")
     table = soup.find("table", class_="row_summable sortable stats_table")
