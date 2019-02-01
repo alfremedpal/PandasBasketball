@@ -58,13 +58,13 @@ lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ign
 ```
 Or you cant set the optional argument `numeric` to True
 
-## Player by season
-You can get a player's stats by season by calling `get_player_season(player, season)`. The resulting data frame consists of all the player's games on the specified season. The `season` argument must be the last year in which the season took place. 
+## Player Game Logs
+You can get all of a player's games in a season by calling `get_player_gamelog(player, season)`. The `season` argument must be the last year in which the season took place. 
 
 ### Example
 To get all of Kawhi Leonard's games during the 2017-2018 season:
 ```
-df = pb.get_player_season("leonaka01", "2018")
+df = pb.get_player_gamelog("leonaka01", "2018")
 ```
 
 ### Considerations
@@ -73,7 +73,7 @@ df = pb.get_player_season("leonaka01", "2018")
 - If the player missed a game, the row will be filled with blanks ("")
 
 ## Teams
-You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, BKN).
+You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, MAV).
 
 ### Example
 To get OKC's table:
