@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup, NavigableString
 from PandasBasketball.errors import TableNonExistent
 
 def player_stats(request, stat, numeric=False, s_index=False):
+    """
+    """
 
     supported_tables = ["totals", "per_minute", "per_poss", "advanced",
                         "playoffs_per_game", "playoffs_totals", "playoffs_per_minute",
@@ -36,17 +38,21 @@ def player_stats(request, stat, numeric=False, s_index=False):
     return df
 
 def player_gamelog(request):
+    """
+    """
 
     soup = BeautifulSoup(request.text, "html.parser")
     table = soup.find("table", class_="row_summable sortable stats_table")
 
-    df = player_season_data(table)
+    df = player_gamelog_data(table)
     df.set_index("Rk", inplace=True)
     
     return df
 
 
 def team_stats(request, team):
+    """
+    """
     
     soup = BeautifulSoup(request.text, "html.parser")
     table = soup.find("table", id=team)
@@ -56,7 +62,11 @@ def team_stats(request, team):
 
     return df
 
-def player_season_data(table):
+def player_gamelog_data(table):
+    """
+    Pretty much the same as 'get_data', except for the missed game validation
+    and getting rid of the mid-table headers.
+    """
 
     columns = []
     heading = table.find("thead")
@@ -95,40 +105,32 @@ def player_season_data(table):
 
 def get_data(table):
     """
-    It works, but it is kinda too much.
-    Looks nicer in 'get_player_season_data',
-    I'll change it when I have time, probably.
+    Gets the data that will fill the data frame.
+    For both 'player_stats' and 'team_stats'.
     """
 
     columns = []
-    seasons = []
-    stats = []
-    data = []
-
-    rows = table.find_all("tr")
     heading = table.find("thead")
     heading_row = heading.find("tr")
-
     for x in heading_row.find_all("th"):
-            columns.append(x.string)
-    for row in rows:
-        a = row.find_all("a")
-        for season in a:
-            if season.string[0] == "1" or season.string[0] == "2":
-                seasons.append(season.string)
-            else: 
-                continue
-    for row in rows:
-        line = row.find_all("td")   
-        for value in line:             
-            stats.append(value.text)    
-    for i in range(len(seasons)): 
-        data.append(seasons[i])         
-        for j in range(len(columns) - 1):
-            data.append(stats[j])
-        del(stats[:len(columns) - 1])
+        columns.append(x.string)
 
-    data = list(zip(*[iter(data)]*len(columns)))
+    body = table.find("tbody")
+    rows = body.find_all("tr")
+
+    data = []
+    for row in rows:
+        temp = []
+        th = row.find("th")
+        td = row.find_all("td")
+        if th:
+            temp.append(th.text)
+        else:
+            continue
+        for v in td:
+            temp.append(v.text)
+        data.append(temp)
+    
     df = pd.DataFrame(data)
     df.columns = columns
 
