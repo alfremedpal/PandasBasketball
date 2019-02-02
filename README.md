@@ -89,5 +89,5 @@ df = pb.get_team("OKC")
 - Fix known issues
 
 # Known Issues
-- Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.
+- ~~Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.~~ Fixed; if a player missed a whole season and then returned to the league, then those rows in the 'Per Game' table will not be added to the resulting data frame.
 - ~~`get_player_season` **wil not work** if a player missed a game for whatever reason.~~ This *should* be fixed now, at least if the reason was 'Inactive', 'Did Not Play', or 'Did Not Dress'. I'm oblivious if there is another justification for a player's absence used in basketball-reference.
