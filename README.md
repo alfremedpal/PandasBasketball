@@ -43,8 +43,8 @@ df = pb.get_player("jamesle01", "per_game")
 
 ### Optional Arguments
 The `get_player()` method supports two optional arguments:
-- numeric - returns the data frame with its columns alreay comverted to numeric
-- s_index - returns the data frame with its column 'Season' as the index
+- `numeric` - returns the data frame with its columns alreay converted to numeric
+- `s_index` - returns the data frame with its column 'Season' as the index
 
 Both are set to `False` by deault.
 
@@ -56,7 +56,7 @@ Both are set to `False` by deault.
 lbj_pg = pb.get_player("jamesle01", "per_game")
 lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ignore")
 ```
-Or you cant set the optional argument `numeric` to True
+Or you cant set the optional argument `numeric` to `True`.
 
 ## Player Game Logs
 You can get all of a player's games in a season by calling `get_player_gamelog(player, season)`. The `season` argument must be the last year in which the season took place. 
@@ -66,6 +66,12 @@ To get all of Kawhi Leonard's games during the 2017-2018 season:
 ```
 df = pb.get_player_gamelog("leonaka01", "2018")
 ```
+
+### Optional Arguments
+The function `get_player_gamelog` supports one optional argument:
+- `playoffs` - returns **only** the playoffs games if set to `True`
+
+Set to `False` by default.
 
 ### Considerations
 - The resulting data frame will use the 'Rk' column as its index
