@@ -28,7 +28,7 @@ def get_player(player, stat, numeric=False, s_index=False):
     else:
         return player_stats(r, stat, numeric=numeric, s_index=s_index)
 
-def get_player_gamelog(player, season):
+def get_player_gamelog(player, season, playoffs=False):
     """
     Returns all of the player's ganes in specified season as a data frame
     \tKeyword arguments:
@@ -42,7 +42,7 @@ def get_player_gamelog(player, season):
     if r.status_code == 404:
         raise StatusCode404
     else:
-        return player_gamelog(r)
+        return player_gamelog(r, playoffs=playoffs)
 
 
 

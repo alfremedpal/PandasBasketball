@@ -37,12 +37,18 @@ def player_stats(request, stat, numeric=False, s_index=False):
 
     return df
 
-def player_gamelog(request):
+def player_gamelog(request, playoffs=False):
     """
     """
 
-    soup = BeautifulSoup(request.text, "html.parser")
-    table = soup.find("table", class_="row_summable sortable stats_table")
+    if playoffs:
+        soup = BeautifulSoup(request.text, "html.parser")
+        comment_table = soup.find(text=lambda x: isinstance(x, NavigableString) and "pgl_basic_playoffs" in x)
+        soup = BeautifulSoup(comment_table, "html.parser")
+        table = soup.find("table", id="pgl_basic_playoffs")
+    else:
+        soup = BeautifulSoup(request.text, "html.parser")
+        table = soup.find("table", class_="row_summable sortable stats_table")
 
     df = player_gamelog_data(table)
     df.set_index("Rk", inplace=True)
