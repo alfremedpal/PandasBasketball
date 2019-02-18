@@ -79,7 +79,7 @@ Set to `False` by default.
 - If the player missed a game, the row will be filled with blanks ("")
 
 ## Teams
-You can call a team's seasons table with `get_team(name)`. The argument 'name' is the team's three-letter abbreviation (e.g. OKC, MAV).
+You can call a team's seasons table with `get_team(name)`. The argument `name` is the team's three-letter abbreviation (e.g. OKC, MAV).
 
 ### Example
 To get OKC's table:
@@ -90,8 +90,10 @@ df = pb.get_team("OKC")
 # Future
 - Add support for the rest of tables on a player's page
 - Implement function to obtain team stats per season
-- Implement function to obtain coaching records
+- Implement function to last n days stats
 - Implement function to obtain game results by date
+- Get player stats against a team
+- Make a small GUI application for non-programmers
 - Fix known issues
 
 # Known Issues
