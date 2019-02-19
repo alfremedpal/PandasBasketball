@@ -23,7 +23,7 @@ def player_stats(request, stat, numeric=False, s_index=False):
         raise TableNonExistent
 
     # Get the whole data frame
-    df = get_data(table)
+    df = get_data_master(table, "player")
 
     if stat == "per_poss" or stat == "playoffs_per_poss":
         del df[None]
@@ -50,7 +50,7 @@ def player_gamelog(request, playoffs=False):
         soup = BeautifulSoup(request.text, "html.parser")
         table = soup.find("table", class_="row_summable sortable stats_table")
 
-    df = get_data_2(table, "gamelog")
+    df = get_data_master(table, "gamelog")
     df.set_index("Rk", inplace=True)
     
     return df
@@ -63,7 +63,7 @@ def team_stats(request, team):
     soup = BeautifulSoup(request.text, "html.parser")
     table = soup.find("table", id=team)
 
-    df = get_data(table)
+    df = get_data_master(table, "team")
     del df["\xa0"]
 
     return df
@@ -77,65 +77,14 @@ def n_days(request, days):
     table = table = soup.find("table", id="players")
 
     if table is not None:
-        df = get_data_2(table, "n_days")
+        df = get_data_master(table, "n_days")
         df.set_index("Rk", inplace=True)
         return df
     else:
         raise TableNonExistent
-    
 
-#===================================================================================
-#===================================================================================
-#===================================================================================
-def get_data_2(table, call):
+def get_data_master(table, tdata):
     """
-    Pretty much the same as 'get_data', except for the missed game validation
-    and getting rid of the mid-table headers.
-    """
-    if call == "gamelog":
-        n_columns = 30
-    elif call == "n_days":
-        n_columns = 25
-
-    columns = []
-    heading = table.find("thead")
-    heading_row = heading.find("tr")
-
-    for x in heading_row.find_all("th"):
-        columns.append(x.string)
-
-    body = table.find("tbody")
-    rows = body.find_all("tr")
-
-    data = []
-    for row in rows:
-        temp = []
-        th = row.find("th")
-        td = row.find_all("td")
-        temp.append(th.text)
-        for v in td:
-            # Fills the rest of the row with blanks
-            if v.text == "Inactive" or v.text == "Did Not Play" or v.text == "Did Not Dress":
-                temp.extend([""]*22)
-                break
-            else:
-                temp.append(v.text)
-        data.append(temp)
-    
-    # Get rids of the headers in the middle of the table
-    for l in data:
-        if len(l) != n_columns:
-            data.remove(l)
-
-    df = pd.DataFrame(data)
-    df.columns = columns
-
-    return df
-
-def get_data(table):
-    """
-    Gets the data that will fill the data frame.
-    For both 'player_stats' and 'team_stats'.
     """
 
     columns = []
@@ -156,9 +105,24 @@ def get_data(table):
             temp.append(th.text)
         else:
             continue
-        for v in td:
-            temp.append(v.text)
-        data.append(temp)
+
+        if tdata == "gamelog" or tdata == "n_days":
+            for v in td:
+                if v.text == "Inactive" or v.text == "Did Not Play" or v.text == "Did Not Dress":
+                    temp.extend([""]*(len(columns) - 8))
+                    break
+                else:
+                    temp.append(v.text)
+            data.append(temp)
+        elif tdata == "player" or tdata == "team":
+            for v in td:
+                temp.append(v.text)
+            data.append(temp)
+    
+    if tdata == "gamelog" or tdata == "n_days":
+        for l in data:
+            if len(l) != len(columns):
+                data.remove(l)
     
     df = pd.DataFrame(data)
     df.columns = columns
