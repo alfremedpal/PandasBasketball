@@ -50,7 +50,7 @@ def player_gamelog(request, playoffs=False):
         soup = BeautifulSoup(request.text, "html.parser")
         table = soup.find("table", class_="row_summable sortable stats_table")
 
-    df = player_gamelog_data(table)
+    df = get_data_2(table, "gamelog")
     df.set_index("Rk", inplace=True)
     
     return df
@@ -68,11 +68,34 @@ def team_stats(request, team):
 
     return df
 
-def player_gamelog_data(table):
+
+def n_days(request, days):
+    """
+    """
+
+    soup = BeautifulSoup(request.text, "html.parser")
+    table = table = soup.find("table", id="players")
+
+    if table is not None:
+        df = get_data_2(table, "n_days")
+        df.set_index("Rk", inplace=True)
+        return df
+    else:
+        raise TableNonExistent
+    
+
+#===================================================================================
+#===================================================================================
+#===================================================================================
+def get_data_2(table, call):
     """
     Pretty much the same as 'get_data', except for the missed game validation
     and getting rid of the mid-table headers.
     """
+    if call == "gamelog":
+        n_columns = 30
+    elif call == "n_days":
+        n_columns = 25
 
     columns = []
     heading = table.find("thead")
@@ -101,7 +124,7 @@ def player_gamelog_data(table):
     
     # Get rids of the headers in the middle of the table
     for l in data:
-        if len(l) != 30:
+        if len(l) != n_columns:
             data.remove(l)
 
     df = pd.DataFrame(data)

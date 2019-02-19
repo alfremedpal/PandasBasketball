@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from PandasBasketball.stats import player_stats, team_stats, player_gamelog
+from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_days
 from PandasBasketball.errors import StatusCode404
 
 BASE_URL = "https://www.basketball-reference.com"
@@ -44,8 +44,6 @@ def get_player_gamelog(player, season, playoffs=False):
     else:
         return player_gamelog(r, playoffs=playoffs)
 
-
-
 def get_team(team):
     """
     Returns a pandas dataframe with the team's stats.
@@ -60,4 +58,21 @@ def get_team(team):
         raise StatusCode404
     else:
         return team_stats(r, team)
+
+def get_n_games(days):
+    """
+    Returns a pandas data frame with all the current 
+    season's (avalaible) players ordered by their GmSc 
+    over the last n days.
+    \tKeyword arguments:
+    \t\tdays -- number of days (1-60)
+    """
+    if days < 1 or days > 60:
+        pass
+    else:
+        url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
+        r = requests.get(url)
+        return n_days(r, days)
+
+
     
