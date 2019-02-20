@@ -78,7 +78,7 @@ def n_days(request, days):
 
     if table is not None:
         df = get_data_master(table, "n_days")
-        df.set_index("Rk", inplace=True)
+        df.set_index("Player", inplace=True)
         return df
     else:
         raise TableNonExistent
