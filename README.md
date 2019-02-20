@@ -78,6 +78,18 @@ Set to `False` by default.
 - The data frame does not include those rows which are just the header again
 - If the player missed a game, the row will be filled with blanks ("")
 
+## Last n days
+Get a data frame with all the season's available players stats over the last n days by calling `get_n_days(days)`.
+
+### Example
+```
+df = pb.get_n_days(10)
+```
+
+### Considerations
+- The resulting data frame will have the column 'Players' as its index by default
+- 
+
 ## Teams
 You can call a team's seasons table with `get_team(name)`. The argument `name` is the team's three-letter abbreviation (e.g. OKC, MAV).
 
@@ -90,7 +102,7 @@ df = pb.get_team("OKC")
 # Future
 - Add support for the rest of tables on a player's page
 - Implement function to obtain team stats per season
-- Implement function to last n days stats
+- ~~Implement function to get the last n days stats~~
 - Implement function to obtain game results by date
 - Get player stats against a team
 - Make a small GUI application for non-programmers
@@ -99,3 +111,5 @@ df = pb.get_team("OKC")
 # Known Issues
 - ~~Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.~~ Fixed; if a player missed a whole season and then returned to the league, then those rows in the 'Per Game' table will not be added to the resulting data frame.
 - ~~`get_player_season` **wil not work** if a player missed a game for whatever reason.~~ This *should* be fixed now, at least if the reason was 'Inactive', 'Did Not Play', or 'Did Not Dress'. I'm oblivious if there is another justification for a player's absence used in basketball-reference.
+
+If you notice an issue please let me know over at the [issues section](https://github.com/alfremedpal/PandasBasketball/issues).
