@@ -59,7 +59,7 @@ def get_team(team):
     else:
         return team_stats(r, team)
 
-def get_n_games(days):
+def get_n_days(days):
     """
     Returns a pandas data frame with all the current 
     season's (avalaible) players ordered by their GmSc 
