@@ -59,11 +59,12 @@ def get_team(team):
     else:
         return team_stats(r, team)
 
-def get_n_days(days):
+def get_n_days(days, player="all"):
     """
     Returns a pandas data frame with all the current 
     season's (avalaible) players ordered by their GmSc 
-    over the last n days.
+    over the last n days. Returns a pandas series if a 
+    single player is specified
     \tKeyword arguments:
     \t\tdays -- number of days (1-60)
     """
@@ -72,7 +73,7 @@ def get_n_days(days):
     else:
         url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
         r = requests.get(url)
-        return n_days(r, days)
+        return n_days(r, days, player=player)
 
 
     

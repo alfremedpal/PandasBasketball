@@ -69,7 +69,7 @@ def team_stats(request, team):
     return df
 
 
-def n_days(request, days):
+def n_days(request, days, player):
     """
     """
 
@@ -79,7 +79,11 @@ def n_days(request, days):
     if table is not None:
         df = get_data_master(table, "n_days")
         df.set_index("Player", inplace=True)
-        return df
+
+        if player == "all":
+            return df
+        else:
+            return df.loc[player]
     else:
         raise TableNonExistent
 
