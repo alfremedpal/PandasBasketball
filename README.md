@@ -18,7 +18,7 @@ Please make sure you meet the following rquirements:
 All the requirements can easily be met with the installation of the [Anaconda](https://www.anaconda.com/download/) distribution.
 
 # Usage
-## Players
+## :basketball: Players
 Inside a player's page on the basketball-reference website you can find several tables, and most of these tables can be obtained as a pandas data frame by calling `get_player(player, stat)`. The 'player' refers to the name of the html file used by basketball-reference inside the url, and the 'stat' means the type of table.
 
 The currently supported tables are:
@@ -58,7 +58,7 @@ lbj_pg[lbj_pg.columns] = lbj_pg[lbj_pg.columns].apply(pd.to_numeric, errors="ign
 ```
 Or you cant set the optional argument `numeric` to `True`.
 
-## Player Game Logs
+## :basketball: Player Game Logs
 You can get all of a player's games in a season by calling `get_player_gamelog(player, season)`. The `season` argument must be the last year in which the season took place. 
 
 ### Example
@@ -78,19 +78,24 @@ Set to `False` by default.
 - The data frame does not include those rows which are just the header again
 - If the player missed a game, the row will be filled with blanks ("")
 
-## Last n days
+## :basketball: Last n days
 Get a data frame with all the season's available players stats over the last n days by calling `get_n_days(days)`.
 
 ### Example
 ```
 df = pb.get_n_days(10)
 ```
+### Optional arguments
+`get_n_days` supports one optional argument: 
+- `player` - returns a pandas series with the stats of the specifed player
+
+`player` is set to `all` by default.
 
 ### Considerations
 - The resulting data frame will have the column 'Players' as its index by default
-- 
+- The data frame is in descending order by GmSc
 
-## Teams
+## :basketball: Teams
 You can call a team's seasons table with `get_team(name)`. The argument `name` is the team's three-letter abbreviation (e.g. OKC, MAV).
 
 ### Example
