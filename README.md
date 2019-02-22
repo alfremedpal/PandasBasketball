@@ -111,7 +111,7 @@ df = pb.get_team("OKC")
 - Implement function to obtain game results by date
 - Get player stats against a team
 - Make a small GUI application for non-programmers
-- Fix known issues
+- Create setup.py 
 
 # Known Issues
 - ~~Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.~~ Fixed; if a player missed a whole season and then returned to the league, then those rows in the 'Per Game' table will not be added to the resulting data frame.
