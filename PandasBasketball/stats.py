@@ -113,7 +113,7 @@ def get_data_master(table, tdata):
         if tdata == "gamelog" or tdata == "n_days":
             for v in td:
                 if v.text == "Inactive" or v.text == "Did Not Play" or v.text == "Did Not Dress":
-                    temp.extend([""]*(len(columns) - 8))
+                    temp.extend([""]*(len(columns) - 8)) # 8 is the min. number of columns all tables have
                     break
                 else:
                     temp.append(v.text)
@@ -123,6 +123,7 @@ def get_data_master(table, tdata):
                 temp.append(v.text)
             data.append(temp)
     
+    # Removes the table's mid headers
     if tdata == "gamelog" or tdata == "n_days":
         for l in data:
             if len(l) != len(columns):
