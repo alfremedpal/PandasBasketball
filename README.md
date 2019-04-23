@@ -104,6 +104,24 @@ To get OKC's table:
 df = pb.get_team("OKC")
 ```
 
+## :basketball: Generate player code
+Baskteball-reference uses a special code to build each player's unique html page. As of now, all functions in `PandasBasketball` expect that code to get the stats for the specified athlete. If you don't want to copy and paste the code from the URL into the function you can try calling `pb.generate_code(player)`. 
+
+**Note:** this is not fully tested, so it is possible to get an incorrect code.
+
+### Example
+To get the player code for LeBronJames:
+```
+pb.generate_code("LeBron James")
+```
+This will output `'jamesle01'` 
+
+Using it with other functions:
+```
+df = pb.get_player(pb.generate_code("Donovan Mitchell"), "per_game")
+```
+
+
 # Future
 - Add support for the rest of tables on a player's page
 - Implement function to obtain team stats per season
