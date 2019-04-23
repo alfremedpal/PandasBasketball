@@ -2,9 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 
 from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_days
-from PandasBasketball.errors import StatusCode404
+from PandasBasketball.errors import StatusCode404, TableNonExistent 
 
 BASE_URL = "https://www.basketball-reference.com"
+
+def generate_code(player):
+    first, last = player.split(" ")
+    
+    first = first[:2]
+    last = last[:5]
+    
+    return (last + first + "01").lower()
+
 
 def get_player(player, stat, numeric=False, s_index=False):
     """
@@ -69,7 +78,7 @@ def get_n_days(days, player="all"):
     \t\tdays -- number of days (1-60)
     """
     if days < 1 or days > 60:
-        pass
+        raise TableNonExistent
     else:
         url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
         r = requests.get(url)

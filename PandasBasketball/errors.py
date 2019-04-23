@@ -1,4 +1,3 @@
-
 class StatusCode404(Exception):
     def __init__(self):
         message = """The page could not be found; url build failed.
