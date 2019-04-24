@@ -105,7 +105,7 @@ df = pb.get_team("OKC")
 ```
 
 ## :basketball: Generate player code
-Baskteball-reference uses a special code to build each player's unique html page. As of now, all functions in `PandasBasketball` expect that code to get the stats for the specified athlete. If you don't want to copy and paste the code from the URL into the function you can try calling `pb.generate_code(player)`. 
+Baskteball-reference uses a special code to build each player's unique html page. As of now, *almost* all functions in `PandasBasketball` expect that code to get the stats for the specified athlete. If you don't want to copy and paste the code from the URL into the function you can try calling `pb.generate_code(player)`. 
 
 **Note:** this is not fully tested, so it is possible to get an incorrect code.
 
@@ -123,16 +123,11 @@ df = pb.get_player(pb.generate_code("Donovan Mitchell"), "per_game")
 
 
 # Future
+- Make this project pip-installable
 - Add support for the rest of tables on a player's page
 - Implement function to obtain team stats per season
 - ~~Implement function to get the last n days stats~~
 - Implement function to obtain game results by date
-- Get player stats against a team
-- Make a small GUI application for non-programmers
-- Create setup.py 
 
-# Known Issues
-- ~~Players that did not play certain seasons for whatever reason (e.g. Michael Jordan, Magic Johnson) will get shifted values.~~ Fixed; if a player missed a whole season and then returned to the league, then those rows in the 'Per Game' table will not be added to the resulting data frame.
-- ~~`get_player_season` **wil not work** if a player missed a game for whatever reason.~~ This *should* be fixed now, at least if the reason was 'Inactive', 'Did Not Play', or 'Did Not Dress'. I'm oblivious if there is another justification for a player's absence used in basketball-reference.
-
-If you notice an issue please let me know over at the [issues section](https://github.com/alfremedpal/PandasBasketball/issues).
+# Contributions & Known Issues
+If you notice an issue or want to contribute open an issue over at the [issues section](https://github.com/alfremedpal/PandasBasketball/issues).
