@@ -2,8 +2,11 @@
 PandasBasketball is a small module intended to scrape data from [basketball-reference](https://www.basketball-reference.com/) and convert it to useful pandas data structures, such as data frames, for future analytical purposes. The use of jupyter notebooks is encouraged.
 
 # Installation
-There's really no installation per se, just download the folder named 'PandasBasketball' and place it on the directory where you will be using the jupyter notebook. That's it.
-You can then import it to your jupyter environment:
+```
+pip install PandasBasketball
+```
+
+After installation you can then import it to your environment like this:
 ```
 from PandasBasketball import pandasbasketball as pb
 ```
