@@ -7,6 +7,7 @@ from PandasBasketball.errors import StatusCode404, TableNonExistent
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
+    first = player.split(" ")[0]
     last = player.split(" ")[-1]
 
     player_database_url = BASE_URL + f"/players/{last[0].lower()}"
@@ -18,8 +19,10 @@ def generate_code(player):
         soup = BeautifulSoup(r.text, "html.parser")
         table = soup.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="players")
         correct_player_link = table.find_all('a', href=lambda href: href and "player" in href, text=player)
-        if len(correct_player_link) != 1:
-            raise StatusCode404
+        if len(correct_player_link) == 1:
+            return str(correct_player_link[0])[20:29]
+        else:
+            return (last[:5] + first[:2] + "01").lower()
 
     return str(correct_player_link[0])[20:29]
 
