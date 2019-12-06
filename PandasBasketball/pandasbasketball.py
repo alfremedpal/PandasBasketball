@@ -9,11 +9,15 @@ BASE_URL = "https://www.basketball-reference.com"
 def generate_code(player):
     first, last = player.split(" ")
 
-    player_database_url = BASE_URL + f"/players/{last[0]}"
+    player_database_url = BASE_URL + f"/players/{last[0].lower()}"
+    r = requests.get(player_database_url)
 
-    
+    if r.status_code == 404:
+        raise StatusCode404
+    else:
+        soup = BeautifulSoup(r.text, "html.parser")
 
-    return (last + first + "01").lower() #to break this find two players who have the same first 2 letters of first name and the same first 5 letters of last name
+    return soup.prettify() #to break this find two players who have the same first 2 letters of first name and the same first 5 letters of last name
 
 
 def get_player(player, stat, numeric=False, s_index=False):
