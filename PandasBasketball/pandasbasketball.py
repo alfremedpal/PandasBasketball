@@ -16,8 +16,15 @@ def generate_code(player):
         raise StatusCode404
     else:
         soup = BeautifulSoup(r.text, "html.parser")
+        table = soup.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="players")
+        correct_player_link = table.find_all('a', href=lambda href: href and "player" in href, text=player)
 
-    return soup.prettify() #to break this find two players who have the same first 2 letters of first name and the same first 5 letters of last name
+    #html = urllib2.urlopen(url).read()
+    #bs = BeautifulSoup(html)
+    #table = bs.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="Table1")
+    #rows = table.findAll(lambda tag: tag.name=='tr')
+
+    return correct_player_link #to break this find two players who have the same first 2 letters of first name and the same first 5 letters of last name
 
 
 def get_player(player, stat, numeric=False, s_index=False):
