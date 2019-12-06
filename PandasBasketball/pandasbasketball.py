@@ -2,17 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 
 from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_days
-from PandasBasketball.errors import StatusCode404, TableNonExistent 
+from PandasBasketball.errors import StatusCode404, TableNonExistent
 
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
     first, last = player.split(" ")
+
+    player_database_url = BASE_URL + f"/players/{last[0]}"
+
     
-    first = first[:2]
-    last = last[:5]
-    
-    return (last + first + "01").lower()
+
+    return (last + first + "01").lower() #to break this find two players who have the same first 2 letters of first name and the same first 5 letters of last name
 
 
 def get_player(player, stat, numeric=False, s_index=False):
@@ -70,9 +71,9 @@ def get_team(team):
 
 def get_n_days(days, player="all"):
     """
-    Returns a pandas data frame with all the current 
-    season's (avalaible) players ordered by their GmSc 
-    over the last n days. Returns a pandas series if a 
+    Returns a pandas data frame with all the current
+    season's (avalaible) players ordered by their GmSc
+    over the last n days. Returns a pandas series if a
     single player is specified
     \tKeyword arguments:
     \t\tdays -- number of days (1-60)
@@ -83,6 +84,3 @@ def get_n_days(days, player="all"):
         url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
         r = requests.get(url)
         return n_days(r, days, player=player)
-
-
-    
