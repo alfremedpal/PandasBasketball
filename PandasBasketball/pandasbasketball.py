@@ -7,7 +7,7 @@ from PandasBasketball.errors import StatusCode404, TableNonExistent
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
-    first, last = player.split(" ")
+    last = player.split(" ")[-1]
 
     player_database_url = BASE_URL + f"/players/{last[0].lower()}"
     r = requests.get(player_database_url)
