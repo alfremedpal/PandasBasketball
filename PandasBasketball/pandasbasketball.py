@@ -7,7 +7,7 @@ from PandasBasketball.errors import StatusCode404, TableNonExistent
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
-    first = player.split(" ")[0]
+    first = player.split(" ")[0] # ignore middle name
     last = player.split(" ")[-1]
 
     player_database_url = BASE_URL + f"/players/{last[0].lower()}"
@@ -18,11 +18,11 @@ def generate_code(player):
     else:
         soup = BeautifulSoup(r.text, "html.parser")
         table = soup.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="players")
-        correct_player_link = table.find_all('a', href=lambda href: href and "player" in href, text=player)
+        correct_player_link = table.find_all('a', href=lambda href: href and "player" in href, text=player) # find the player(s) with the given name (could be multiple if more than one player have the same name)
         if len(correct_player_link) == 1:
-            return str(correct_player_link[0])[20:29]
+            return str(correct_player_link[0])[20:29] # use the first one if there are more than one
         else:
-            return (last[:5] + first[:2] + "01").lower()
+            return (last[:5] + first[:2] + "01").lower() # default to this in case of a mistyped name (won't work with get_player) or a name typed "correctly" in only ascii chars (will work with get_player)
 
     return str(correct_player_link[0])[20:29]
 
