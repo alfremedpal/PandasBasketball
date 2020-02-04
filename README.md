@@ -126,7 +126,7 @@ df = pb.get_player(pb.generate_code("Donovan Mitchell"), "per_game")
 
 
 # Future
-- Make this project pip-installable
+- ~~Make this project pip-installable~~
 - Add support for the rest of tables on a player's page
 - Implement function to obtain team stats per season
 - ~~Implement function to get the last n days stats~~
