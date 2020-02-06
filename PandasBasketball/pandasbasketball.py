@@ -2,17 +2,29 @@ import requests
 from bs4 import BeautifulSoup
 
 from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_days
-from PandasBasketball.errors import StatusCode404, TableNonExistent 
+from PandasBasketball.errors import StatusCode404, TableNonExistent
 
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
-    first, last = player.split(" ")
-    
-    first = first[:2]
-    last = last[:5]
-    
-    return (last + first + "01").lower()
+    first = player.split(" ")[0] # ignore middle name
+    last = player.split(" ")[-1]
+
+    player_database_url = BASE_URL + f"/players/{last[0].lower()}"
+    r = requests.get(player_database_url)
+
+    if r.status_code == 404:
+        raise StatusCode404
+    else:
+        soup = BeautifulSoup(r.text, "html.parser")
+        table = soup.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="players")
+        correct_player_link = table.find_all('a', href=lambda href: href and "player" in href, text=player) # find the player(s) with the given name (could be multiple if more than one player have the same name)
+        if len(correct_player_link) == 1:
+            return str(correct_player_link[0])[20:29] # use the first one if there are more than one
+        else:
+            return (last[:5] + first[:2] + "01").lower() # default to this in case of a mistyped name (won't work with get_player) or a name typed "correctly" in only ascii chars (will work with get_player)
+
+    return str(correct_player_link[0])[20:29]
 
 
 def get_player(player, stat, numeric=False, s_index=False):
@@ -70,9 +82,9 @@ def get_team(team):
 
 def get_n_days(days, player="all"):
     """
-    Returns a pandas data frame with all the current 
-    season's (avalaible) players ordered by their GmSc 
-    over the last n days. Returns a pandas series if a 
+    Returns a pandas data frame with all the current
+    season's (avalaible) players ordered by their GmSc
+    over the last n days. Returns a pandas series if a
     single player is specified
     \tKeyword arguments:
     \t\tdays -- number of days (1-60)
@@ -83,6 +95,3 @@ def get_n_days(days, player="all"):
         url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
         r = requests.get(url)
         return n_days(r, days, player=player)
-
-
-    
