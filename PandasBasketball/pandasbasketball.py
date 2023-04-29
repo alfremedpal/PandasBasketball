@@ -6,7 +6,6 @@ from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_d
 from PandasBasketball.errors import StatusCode404, TableNonExistent
 
 BASE_URL = "https://www.basketball-reference.com"
-POSITIONS = {'PG': 'G', 'SG': 'G', 'SF': 'F', 'PF': 'F', 'C': 'C'}
 
 def generate_code(player):
     """
