@@ -1,19 +1,34 @@
 import requests
 from bs4 import BeautifulSoup
+import unidecode
 
 from PandasBasketball.stats import player_stats, team_stats, player_gamelog, n_days
-from PandasBasketball.errors import StatusCode404, TableNonExistent 
+from PandasBasketball.errors import StatusCode404, TableNonExistent
 
 BASE_URL = "https://www.basketball-reference.com"
 
 def generate_code(player):
-    first, last = player.split(" ")
-    
-    first = first[:2]
-    last = last[:5]
-    
-    return (last + first + "01").lower()
+    """
+    Returns a string of a player's basketball-reference code.
+    \tKeyword arguments:
+    \t\tplayer -- the player's name (spelled as it's found on basketball-reference)
+    """
 
+    last_initial = player.split(" ")[1][0].lower()
+    
+    # navigate to https://www.basketball-reference.com/players/{last_initial}/ to scrape the player's href
+    r = requests.get("https://www.basketball-reference.com/players/" + last_initial + "/")
+
+    # parse HTML to find correct href
+    soup = BeautifulSoup(r.text, 'html.parser')
+    player_list = soup.find('tbody').find_all('tr')
+
+    for p in player_list:
+        if unidecode.unidecode(p.find('a').text).lower() == player.lower(): # remove accent mark from player's name if it has any
+            return p.find('a').get('href').split('/')[3].replace('.html', '')
+    
+    # raise an exception if the player's code can't be found
+    raise Exception("Could not find player's basketball-reference code. You may have misspelled their name.")
 
 def get_player(player, stat, numeric=False, s_index=False):
     """
@@ -83,6 +98,3 @@ def get_n_days(days, player="all"):
         url = BASE_URL + f"/friv/last_n_days.fcgi?n={days}"
         r = requests.get(url)
         return n_days(r, days, player=player)
-
-
-    
