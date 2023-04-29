@@ -113,7 +113,7 @@ Baskteball-reference uses a special code to build each player's unique html page
 **Note:** this is not fully tested, so it is possible to get an incorrect code.
 
 ### Example
-To get the player code for LeBronJames:
+To get the player code for LeBron James:
 ```
 pb.generate_code("LeBron James")
 ```
@@ -123,6 +123,12 @@ Using it with other functions:
 ```
 df = pb.get_player(pb.generate_code("Donovan Mitchell"), "per_game")
 ```
+
+This function is **not** case-sensitive or accent-sensitive. For example, you can retrieve Nikola Jokić's player code with the following:
+```
+pb.generate_code("nikola jokic")
+```
+This will output `'jokicni01'`
 
 
 # Future
